@@ -1,7 +1,11 @@
+import Footer from "./components/layout/Footer.jsx";
+import Header from "./components/layout/Header.jsx";
+
 function App() {
     return (
-        <div>
-            <h1>ShopIt</h1>
+        <div className="App">
+            <Header />
+            <Footer />
         </div>
     );
 }

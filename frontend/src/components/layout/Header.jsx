@@ -1,12 +1,12 @@
 import React from 'react'
 
-const header = () => {
+const Header = () => {
   return (
     <nav className="navbar row">
       <div className="col-12 col-md-3 ps-5">
         <div className="navbar-brand">
           <a href="/">
-            <img src="../images/shopit_logo.png" alt="ShopIT Logo" />
+            <img src="/images/shopit_logo.png" alt="ShopIT Logo" />
           </a>
         </div>
       </div>
@@ -29,7 +29,7 @@ const header = () => {
         </form>
       </div>
       <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
-        <a href="/cart" style="text-decoration: none">
+        <a href="/cart" style={{textDecoration: "none"}}>
           <span id="cart" className="ms-3"> Cart </span>
           <span className="ms-1" id="cart_count">0</span>
         </a>
@@ -44,7 +44,7 @@ const header = () => {
           >
             <figure className="avatar avatar-nav">
               <img
-                src="../images/default_avatar.jpg"
+                src="/images/default_avatar.jpg"
                 alt="User Avatar"
                 className="rounded-circle"
               />
@@ -68,4 +68,4 @@ const header = () => {
   )
 }
 
-export default header
+export default Header
