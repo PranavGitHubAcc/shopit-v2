@@ -4,12 +4,15 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors.js";
 import apiFilters from "../utils/apiFilters.js";
 
 // /api/v1/products
-export const getProducts = catchAsyncErrors(async (req, res) => {
+export const getProducts = catchAsyncErrors(async (req, res, next) => {
     const apifilters = new apiFilters(Product, req.query).search().filters();
     const resPerPage = 4;
 
     let products = await apifilters.query;
     let filteredProductsCount = products.length;
+
+
+
     apifilters.pagination(resPerPage);
     products = await apifilters.query.clone();
 
