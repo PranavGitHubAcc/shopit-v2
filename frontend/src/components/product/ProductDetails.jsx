@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../../redux/api/productsApi";
 import { useEffect } from "react";
@@ -12,6 +12,16 @@ const ProductDetails = () => {
         params?.id
     );
     const product = data?.product;
+    const [activeImg, setActiveImg] = useState("");
+
+    useEffect(() => {
+        setActiveImg(
+            product?.images[0]
+                ? product?.images[0]?.url
+                : "/images/default_product.png"
+        );
+    }, [product]);
+
     useEffect(() => {
         if (isError) {
             toast.error(error?.data?.message);
@@ -25,8 +35,8 @@ const ProductDetails = () => {
                 <div className="p-3">
                     <img
                         className="d-block w-100"
-                        src=""
-                        alt=""
+                        src={activeImg}
+                        alt={product?.name}
                         width="340"
                         height="390"
                     />
@@ -37,11 +47,16 @@ const ProductDetails = () => {
                         <div className="col-2 ms-4 mt-2">
                             <a role="button">
                                 <img
-                                    className="d-block border rounded p-3 cursor-pointer"
+                                    className={`d-block border rounded p-3 cursor-pointer ${
+                                        img.url === activeImg
+                                            ? "border-warning"
+                                            : ""
+                                    }`}
                                     height="100"
                                     width="100"
                                     src={img?.url}
                                     alt={img?.url}
+                                    onClick={(e) => setActiveImg(img.url)}
                                 />
                             </a>
                         </div>
