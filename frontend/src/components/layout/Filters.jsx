@@ -1,6 +1,65 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getPriceQueryParams } from "../helpers/helpers";
+import { PRODUCT_CATEGORIES } from "../../constants/constants";
+import { CheckmarkIcon } from "react-hot-toast";
 const Filters = () => {
+    const [min, setMin] = useState(0);
+    const [max, setMax] = useState(0);
+
+    const navigate = useNavigate();
+    let [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        searchParams.has("min") && setMin(searchParams.get("min"));
+        searchParams.has("max") && setMax(searchParams.get("max"));
+    }, []);
+
+    // Category selection (only one category should be selected at a time)
+    const handleClick = (checkbox) => {
+        const checkboxes = document.getElementsByName(checkbox.name);
+
+        checkboxes.forEach((item) => {
+            if (item !== checkbox) item.checked = false;
+        });
+
+        if (checkbox.checked === false) {
+            if (searchParams.has(checkbox.name)) {
+                searchParams.delete(checkbox.name);
+                const path =
+                    window.location.pathname + "?" + searchParams.toString();
+                navigate(path);
+            }
+        } else {
+            // Set new filter if value already there
+            if (searchParams.has(checkbox.name)) {
+                searchParams.set(checkbox.name, checkbox.value);
+            } else {
+                // Append new value
+                searchParams.append(checkbox.name, checkbox.value);
+            }
+
+            const path =
+                window.location.pathname + "?" + searchParams.toString();
+            navigate(path);
+        }
+    };
+
+    // Handle price filter
+    const handleButtonClick = (e) => {
+        e.preventDefault();
+        searchParams = getPriceQueryParams(searchParams, "min", min);
+        searchParams = getPriceQueryParams(searchParams, "max", max);
+        const path = window.location.pathname + "?" + searchParams.toString();
+        navigate(path);
+    };
+
+    const DefaultCheckHandler = (checkboxType, checkboxValue) => {
+        const value = searchParams.get(checkboxType);
+        if (checkboxValue === value) return true;
+        return false;
+    };
+
     return (
         <div className="border p-3 filter">
             <h3>Filters</h3>
@@ -9,8 +68,7 @@ const Filters = () => {
             <form
                 id="filter_form"
                 className="px-2"
-                action="your_action_url_here"
-                method="get"
+                onSubmit={handleButtonClick}
             >
                 <div className="row">
                     <div className="col">
@@ -19,7 +77,8 @@ const Filters = () => {
                             className="form-control"
                             placeholder="Min ($)"
                             name="min"
-                            value=""
+                            value={min}
+                            onChange={(e) => setMin(e.target.value)}
                         />
                     </div>
                     <div className="col">
@@ -28,7 +87,8 @@ const Filters = () => {
                             className="form-control"
                             placeholder="Max ($)"
                             name="max"
-                            value=""
+                            value={max}
+                            onChange={(e) => setMax(e.target.value)}
                         />
                     </div>
                     <div className="col">
@@ -41,32 +101,25 @@ const Filters = () => {
             <hr />
             <h5 className="mb-3">Category</h5>
 
-            <div className="form-check">
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="category"
-                    id="check4"
-                    value="Category 1"
-                />
-                <label className="form-check-label" for="check4">
-                    {" "}
-                    Category 1{" "}
-                </label>
-            </div>
-            <div className="form-check">
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    name="category"
-                    id="check5"
-                    value="Category 2"
-                />
-                <label className="form-check-label" for="check5">
-                    {" "}
-                    Category 2{" "}
-                </label>
-            </div>
+            {PRODUCT_CATEGORIES?.map((category) => (
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="category"
+                        id="check5"
+                        value={category}
+                        defaultChecked={DefaultCheckHandler(
+                            "category",
+                            category
+                        )}
+                        onClick={(e) => handleClick(e.target)}
+                    />
+                    <label className="form-check-label" for="check5">
+                        {category}
+                    </label>
+                </div>
+            ))}
 
             <hr />
             <h5 className="mb-3">Ratings</h5>
