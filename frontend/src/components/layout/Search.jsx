@@ -24,7 +24,7 @@ const Search = () => {
                         className="form-control"
                         placeholder="Enter Product Name ..."
                         name="keyword"
-                        value={keyword}
+                        value={keyword} 
                         onChange={(e) => setKeyword(e.target.value)}
                     />
                     <button id="search_btn" className="btn" type="submit">

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getPriceQueryParams } from "../helpers/helpers";
 import { PRODUCT_CATEGORIES } from "../../constants/constants";
-import { CheckmarkIcon } from "react-hot-toast";
 import StarRatings from "react-star-ratings";
+
 const Filters = () => {
     const [min, setMin] = useState(0);
     const [max, setMax] = useState(0);
