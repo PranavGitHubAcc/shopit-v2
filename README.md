@@ -1,1 +1,1 @@
-MERN Stack course from Udemy
+MERN Stack E-commerce website from Udemy.
